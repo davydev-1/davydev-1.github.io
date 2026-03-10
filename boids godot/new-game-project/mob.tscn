@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1twr2i6iwxt8"]
+
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_dy6sc"]
+[ext_resource type="Script" uid="uid://bfrxiuaoo0nav" path="res://mob.gd" id="2_nokgg"]
+
+[node name="Mob" type="Sprite2D"]
+scale = Vector2(2, 1)
+texture = ExtResource("1_dy6sc")
+script = ExtResource("2_nokgg")

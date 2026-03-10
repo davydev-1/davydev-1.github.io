@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqow47bch5ocs"]
+
+[ext_resource type="Script" uid="uid://btpgdq7upp6u8" path="res://boids.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_0xm2m"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Main" type="Node2D" parent="."]
+script = ExtResource("1_ig7tw")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(573, 334)
+zoom = Vector2(0.1, 0.1)
+
+[node name="mouse" type="Marker2D" parent="."]
+gizmo_extents = 164.0
+
+[node name="Sprite2D" type="Sprite2D" parent="mouse"]
+texture = ExtResource("2_0xm2m")
