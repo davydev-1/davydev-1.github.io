@@ -8,12 +8,15 @@ extends Sprite2D
 @export var wallBounce: float = 1     # Energy retained after hitting a wall
 @export var thrustPower:float = 80
 @export var jitter:float=1000
+@export var screenPadding:float = 700 
+
 # --- FLOCKING RULES ---
 @export_group("Flocking Rules")
-@export var detectionRadius: float = 400.0 # How far a boid can see neighbors
+@export var detectionRadius: float = 300.0 # How far a boid can see neighbors
 @export var seperationRadius: float = 100.0 # Personal space bubble
 @export var alignmentfactor: float = 0.1  # How strongly boids mimic neighbors' direction
-@export var cohesion: float = 15         # How strongly boids are pulled to group center
+@export var cohesion: float = 29 # How strongly boids are pulled to group center
+		
 
 # --- INTERACTION ---
 @export_group("Interaction")
@@ -83,14 +86,34 @@ func _process(delta: float) -> void:
 
 	
 	# Boundary logic
-	if position.y > $"..".screenHeight: position.y = $"..".screenHeight; velocity.y *= -wallBounce
-	if position.y < 0: position.y = 0; velocity.y *= -wallBounce
-	if position.x > $"..".screenWidth: position.x = $"..".screenWidth; velocity.x *= -wallBounce
-	if position.x < 0: position.x = 0; velocity.x *= -wallBounce
-		
-	timer += delta
-	if timer > maxtime:
-		
-		velocity+=Vector2(randf()-0.5,randf()-0.5)*jitter
-		timer = 0
-		getLocalBoids()
+	# --- Boundary Repulsion ---
+	var screenWidth = $"..".screenWidth
+	var screenHeight = $"..".screenHeight
+	var repelForce = 3 # Strength of the push-back
+
+	# Left wall
+	if position.x < screenPadding:
+		var penetration = screenPadding - position.x
+		velocity.x += pow(penetration,1.5) * repelForce * delta
+
+	# Right wall
+	elif position.x > screenWidth - screenPadding:
+		var penetration = position.x - (screenWidth - screenPadding)
+		velocity.x -= pow(penetration,1.5) * repelForce * delta
+
+	# Top wall
+	if position.y < screenPadding:
+		var penetration = screenPadding - position.y
+		velocity.y += pow(penetration,1.5) * repelForce * delta+thrustPower/2
+
+	# Bottom wall
+	elif position.y > screenHeight - screenPadding:
+		var penetration = position.y - (screenHeight - screenPadding)
+		velocity.y -= pow(penetration,1.5) * repelForce * delta+thrustPower/2
+			
+		timer += delta
+		if timer > maxtime:
+			
+			velocity+=Vector2(randf()-0.5,randf()-0.5)*jitter
+			timer = 0
+			getLocalBoids()

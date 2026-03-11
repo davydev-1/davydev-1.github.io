@@ -1,6 +1,6 @@
 extends Node2D
 @export var numBoids:int=100
-@export var spawnRadius:int=100000
+@export var spawnRadius:int=1000
 @export var startingBoidSpeed=200
 @export var screenHeight=null
 @export var screenWidth=null
